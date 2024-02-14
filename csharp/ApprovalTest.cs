@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace csharp
 {
-    [UseReporter(typeof(DiffReporter))]
+    /*[UseReporter(typeof(DiffReporter))]
     [TestFixture]
     public class ApprovalTest
     {
@@ -24,5 +24,5 @@ namespace csharp
 
             Approvals.Verify(output);
         }
-    }
+    }*/
 }

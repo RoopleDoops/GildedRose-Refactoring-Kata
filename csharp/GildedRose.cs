@@ -24,6 +24,7 @@ namespace csharp
                         }
                     }
                 }
+                // if aged brie or backstage pass
                 else
                 {
                     if (Items[i].Quality < 50)
