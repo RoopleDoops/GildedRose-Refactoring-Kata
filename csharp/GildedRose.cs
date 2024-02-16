@@ -16,7 +16,7 @@ namespace csharp
             foreach (var item in Items)
             {
                 // If "typical" item decrease item quality
-                if (item.Name != "Aged Brie" 
+                if (item.Name != "Aged Brie"
                     && item.Name != "Backstage passes to a TAFKAL80ETC concert"
                     && item.Name != "Sulfuras, Hand of Ragnaros")
                 {
@@ -51,8 +51,9 @@ namespace csharp
                                 qualityAmountToIncrease = 2;
                             }
                         }
-                        // Update non-typical item quality
+                        // Update non-typical item quality and cap at max of 50.
                         item.Quality += qualityAmountToIncrease;
+                        if (item.Quality > 50) item.Quality = 50;
                     }
                 }
 
@@ -61,8 +62,9 @@ namespace csharp
                 {
                     item.SellIn -= 1;
                 }
-                // Decrease "typical item" in quality after sell-in is below zero
-                if (item.SellIn < 0 )
+
+                // Further adjust item quality after SellIn is less than zero
+                if (item.SellIn < 0)
                 {
                     // Concert quality goes to 0 after sell in is below (when concert has passed)
                     if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
@@ -70,7 +72,7 @@ namespace csharp
                         item.Quality = 0;
                     }
                     //  Brie and Sulfuras increases in quality with time
-                    else if (item.Name == "Aged Brie" || item.Name == "Sulfuras, Hand of Ragnaros" && item.Quality < 50)
+                    else if ((item.Name == "Aged Brie" || item.Name == "Sulfuras, Hand of Ragnaros") && item.Quality < 50)
                     {
                         item.Quality += 1;
                     }

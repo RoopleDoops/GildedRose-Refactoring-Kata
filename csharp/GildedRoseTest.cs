@@ -83,6 +83,16 @@ namespace csharp
             Assert.AreEqual(2, Items[0].Quality);
         }
 
+        // When Name is Aged Brie, Quality Should Increase by 1
+        [Test]
+        public void updateQuality_QualityIncreaseby1WhenAgedBrieAndSellInLessThanZero()
+        {
+            IList<Item> Items = new List<Item> { new Item { Name = "Aged Brie", SellIn = -5, Quality = 1 } };
+            GildedRose app = new GildedRose(Items);
+            app.UpdateQuality();
+            Assert.AreEqual(2, Items[0].Quality);
+        }
+
         //when quality is 50, it should remain at 50 rather than increasing to 51
         [Test]
         public void updateQuality_QualityRemainsAt50WhenAgedBrieQualityIs50()
