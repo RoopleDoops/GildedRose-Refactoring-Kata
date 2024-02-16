@@ -12,77 +12,64 @@ namespace csharp
 
         public void UpdateQuality()
         {
-            for (var i = 0; i < Items.Count; i++)
+            var itemQualityDegradeAmount = 1;
+            foreach (var item in Items)
             {
-                if (Items[i].Name != "Aged Brie" && Items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
+                // If "typical" item decrease item quality
+                if (item.Name != "Aged Brie" 
+                    && item.Name != "Backstage passes to a TAFKAL80ETC concert"
+                    && item.Name != "Sulfuras, Hand of Ragnaros")
                 {
-                    if (Items[i].Quality > 0)
+                    if (item.Quality > 0)
                     {
-                        if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
-                        {
-                            Items[i].Quality = Items[i].Quality - 1;
-                        }
+                        item.Quality -= itemQualityDegradeAmount;
                     }
                 }
-                // if aged brie or backstage pass
+                // if "non-typical" item (Aged brie, backstage pass, or Sulfuras)
                 else
                 {
-                    if (Items[i].Quality < 50)
+                    if (item.Quality < 50)
                     {
-                        Items[i].Quality = Items[i].Quality + 1;
+                        // All non-typical items increase in quality by 1
+                        var qualityAmountToIncrease = 1;
 
-                        if (Items[i].Name == "Backstage passes to a TAFKAL80ETC concert")
+                        // Backstage pass quality increases variably as it approaches SellIn date
+                        if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
                         {
-                            if (Items[i].SellIn < 11)
+                            if (item.SellIn < 6 && item.Quality < 50)
                             {
-                                if (Items[i].Quality < 50)
-                                {
-                                    Items[i].Quality = Items[i].Quality + 1;
-                                }
+                                qualityAmountToIncrease = 3;
                             }
-
-                            if (Items[i].SellIn < 6)
+                            else if (item.SellIn < 11 && item.Quality < 50)
                             {
-                                if (Items[i].Quality < 50)
-                                {
-                                    Items[i].Quality = Items[i].Quality + 1;
-                                }
+                                qualityAmountToIncrease = 2;
                             }
                         }
+                        // Update non-typical item quality
+                        item.Quality += qualityAmountToIncrease;
                     }
                 }
 
-                if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
+                // Decrease SellIn date for all non-Sulfuras items
+                if (item.Name != "Sulfuras, Hand of Ragnaros")
                 {
-                    Items[i].SellIn = Items[i].SellIn - 1;
+                    item.SellIn -= 1;
                 }
-
-                if (Items[i].SellIn < 0)
+                // Decrease "typical item" in quality after sell-in is below zero
+                if (item.SellIn < 0 )
                 {
-                    if (Items[i].Name != "Aged Brie")
+                    // Concert quality goes to 0 after sell in is below (when concert has passed)
+                    if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
                     {
-                        if (Items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
-                        {
-                            if (Items[i].Quality > 0)
-                            {
-                                if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
-                                {
-                                    Items[i].Quality = Items[i].Quality - 1;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Items[i].Quality = Items[i].Quality - Items[i].Quality;
-                        }
+                        item.Quality = 0;
                     }
-                    else
+                    //  Brie and Sulfuras increases in quality with time
+                    else if (item.Name == "Aged Brie" || item.Name == "Sulfuras, Hand of Ragnaros" && item.Quality < 50)
                     {
-                        if (Items[i].Quality < 50)
-                        {
-                            Items[i].Quality = Items[i].Quality + 1;
-                        }
+                        item.Quality += 1;
                     }
+                    // Typical item decreases in quality -1
+                    else item.Quality -= itemQualityDegradeAmount;
                 }
             }
         }
