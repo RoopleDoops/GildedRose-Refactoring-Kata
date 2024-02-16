@@ -20,7 +20,13 @@ namespace csharp
                     && item.Name != "Backstage passes to a TAFKAL80ETC concert"
                     && item.Name != "Sulfuras, Hand of Ragnaros")
                 {
-                    if (item.Quality > 0)
+                    // Conjured items decrease twice as fast as typical items
+                    if (item.Name == "Conjured Mana Cake")
+                    {
+                        item.Quality -= itemQualityDegradeAmount * 2;
+                    }
+                    // Typical item quality decrease
+                    else if (item.Quality > 0)
                     {
                         item.Quality -= itemQualityDegradeAmount;
                     }
@@ -67,6 +73,10 @@ namespace csharp
                     else if (item.Name == "Aged Brie" || item.Name == "Sulfuras, Hand of Ragnaros" && item.Quality < 50)
                     {
                         item.Quality += 1;
+                    }
+                    else if (item.Name == "Conjured Mana Cake")
+                    {
+                        item.Quality -= itemQualityDegradeAmount * 2;
                     }
                     // Typical item decreases in quality -1
                     else item.Quality -= itemQualityDegradeAmount;

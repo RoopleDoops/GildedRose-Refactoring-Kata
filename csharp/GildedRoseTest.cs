@@ -130,6 +130,7 @@ namespace csharp
             app.UpdateQuality();
             Assert.AreEqual(8, Items[0].Quality);
         }
+
         [Test]
         public void updateQuality_BackstagePassesDropToZeroQualityWhenSellInIsLessThanZero()
         {
@@ -138,6 +139,7 @@ namespace csharp
             app.UpdateQuality();
             Assert.AreEqual(0, Items[0].Quality);
         }
+
         [Test]
         public void updateQuality_BackstagePassesQualityIncreasesBy1When11DaysOrMore()
         {
@@ -147,6 +149,23 @@ namespace csharp
             Assert.AreEqual(6, Items[0].Quality);
         }
 
+        [Test]
+        public void updateQuality_ConjuredQualityDecreaseTwiceAsFastAsNormalItems()
+        {
+            IList<Item> Items = new List<Item> { new Item { Name = "Conjured Mana Cake", SellIn = 11, Quality = 6 } };
+            GildedRose app = new GildedRose(Items);
+            app.UpdateQuality();
+            Assert.AreEqual(4, Items[0].Quality);
+        }
+
+        [Test]
+        public void updateQuality_ConjuredQualityDecreaseTwiceAsFastAsNormalItemsWhenSellInLessThanZero()
+        {
+            IList<Item> Items = new List<Item> { new Item { Name = "Conjured Mana Cake", SellIn = 0, Quality = 6 } };
+            GildedRose app = new GildedRose(Items);
+            app.UpdateQuality();
+            Assert.AreEqual(2, Items[0].Quality);
+        }
 
     }
 }
